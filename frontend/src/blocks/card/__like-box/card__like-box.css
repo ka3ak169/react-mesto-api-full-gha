@@ -1,0 +1,7 @@
+.card__like-box {
+  display: block;
+  margin: 0 0 0 auto;
+  align-items: center;
+  text-align: center;
+  max-width: 35px;
+}

@@ -1,0 +1,19 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000;
+    font-family: "inter", "Arial", sans-serif;
+    position: relative;
+}
+
+@media screen and (max-width: 880px) {
+    .page {
+        padding: 0 19px 0;
+    }
+}
+@media screen and (max-width: 600px) {
+    .page {
+        padding: 0;
+    }
+}

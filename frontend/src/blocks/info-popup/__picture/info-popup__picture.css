@@ -1,0 +1,9 @@
+.info-popup__picture {
+  max-width: 120px;
+  min-width: 120px;
+  min-height: 120px;
+  background-repeat: no-repeat;
+  margin-top: 26px;
+  background-position: center center;
+  align-self: center;
+}

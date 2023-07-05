@@ -1,0 +1,8 @@
+.submit-button_invalid {
+  color: #000;
+  background-color: #fff;
+  opacity: .2;
+  pointer-events: none;
+  /* border-radius: 2px; */
+  border: 1px solid #000000;
+}
