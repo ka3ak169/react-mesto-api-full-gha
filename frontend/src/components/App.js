@@ -34,24 +34,33 @@ function App() {
   const [registration, setRegistration] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        tokenCheck();
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+          const token = JSON.parse(storedToken);
+          await tokenCheck(token); // Ждем завершения проверки токена
+          setLoggedIn(true);
+          navigate("/");
+        }
         if (loggedIn) {
           const [userData, cards] = await Promise.all([
-          api.getUserInformation(),
-          api.getInitialCards(),
-        ]);
-        setCurrentUser(userData);
-        setCards(cards.map((item) => item));
-        }        
+            api.getUserInformation(),
+            api.getInitialCards(),
+          ]);
+          setCurrentUser(userData);
+          setCards(cards.map((item) => item));
+        }
       } catch (error) {
         console.log(error);
       }
-    }
+    };
+  
     fetchData();
   }, [loggedIn]);
+  
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -155,16 +164,18 @@ function App() {
   const handleRegisterSubmit = (email, password) => {
     register(email, password)
       .then((result) => {
-        console.log(result);
+        // Обработка успешного результата
+        // console.log(result);
         setRegistration(true);
         setIsInfoTooltipPopupOpen(true);
         setFormValue({ email: "", password: "" });
         setTimeout(() => {
-          navigate("/sign-in");
+          navigate("/signin");
           closeAllPopups();
         }, 2000);
       })
       .catch((error) => {
+        // Обработка ошибки
         console.log(error);
         setRegistration(false);
         setIsInfoTooltipPopupOpen(true);
@@ -177,46 +188,44 @@ function App() {
 
   const handleLoginSubmit = (email, password) => {
     authorization(email, password)
-      .then((result) => {
-        localStorage.setItem("token", JSON.stringify({ result }));
+    .then((result) => {
+      if (result) {
+        console.log(result.token);
+        
+        localStorage.setItem("token", JSON.stringify(result.token));
         setLoggedIn(true);
         setUserEmail(email);
         navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsInfoTooltipPopupOpen(true);
-        setFormValue({ email: "", password: "" });
-        setRegistration(false);
-        setTimeout(() => {
-          closeAllPopups();
-        }, 2000);
-      });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      setIsInfoTooltipPopupOpen(true);
+      setFormValue({ email: "", password: "" });
+      setRegistration(false);
+      setTimeout(() => {
+        closeAllPopups();
+      }, 2000);
+    });
   };
 
-  const tokenCheck = () => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      const token = JSON.parse(storedToken).result;
-      authorize(token)
-        .then((result) => {
-          if (result !== null && result.data !== null) {
-            // console.log(result.data.email);
-            setUserEmail(result.data.email);
-            setLoggedIn(true);
-            navigate("/");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+  const tokenCheck = async (token) => {
+    try {
+      const result = await authorize(token);
+      if (result !== null && result.data !== null) {
+        setUserEmail(result.data.email);
+        setLoggedIn(true);
+        api.setToken(token);
+      }
+    } catch (error) {
+      console.log("Токена не существует");
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setFormValue({ email: "", password: "" });
-    navigate("/sign-in");
+    navigate("/signin");
   };
 
   return (
@@ -231,7 +240,7 @@ function App() {
                   userEmail={userEmail}
                   onLogout={handleLogout}
                   text={"Выйти"}
-                  way={"/sign-in"}
+                  way={"/signin"}
                   loggedIn={loggedIn}
                 />
                 <ProtectedRoute
@@ -249,13 +258,13 @@ function App() {
             }
           />
           <Route
-            path="/sign-in"
+            path="/signin"
             element={
               <>
                 <Header
                   onLogout={handleLogout}
                   text={"Регистрация"}
-                  way={"/sign-up"}
+                  way={"/signup"}
                   loggedIn={loggedIn}
                 />
                 <Login
@@ -267,13 +276,13 @@ function App() {
             }
           />
           <Route
-            path="/sign-up"
+            path="/signup"
             element={
               <>
                 <Header
                   onLogout={handleLogout}
                   text={"Войти"}
-                  way={"/sign-in"}
+                  way={"/signin"}
                   loggedIn={loggedIn}
                 />
                 <Register

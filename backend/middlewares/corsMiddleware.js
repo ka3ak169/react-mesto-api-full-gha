@@ -11,7 +11,8 @@ const corsMiddleware = (req, res, next) => {
       res.header('Access-Control-Allow-Origin', origin);
     } else {
       // Если источник запроса не найден среди разрешенных, пропускаем обработку запроса дальше без изменений заголовка ответа
-      res.header('Access-Control-Allow-Origin', '');
+      // Удаляем заголовок Access-Control-Allow-Origin
+      res.removeHeader('Access-Control-Allow-Origin');
     }
 
     const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
@@ -28,6 +29,9 @@ const corsMiddleware = (req, res, next) => {
 
       // Разрешаем кросс-доменные запросы с этими заголовками
       res.header('Access-Control-Allow-Headers', requestHeaders);
+
+      // Добавляем заголовок для указания ожидаемых типов файлов и картинок
+      res.header('Access-Control-Expose-Headers', 'Content-Disposition');
 
       // Завершаем обработку запроса и возвращаем результат клиенту
       return res.end();

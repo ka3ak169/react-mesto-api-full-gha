@@ -7,6 +7,8 @@ const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
   'localhost:3000',
+  'http://localhost:3001',
+  '*',
 ];
 
 module.exports = {

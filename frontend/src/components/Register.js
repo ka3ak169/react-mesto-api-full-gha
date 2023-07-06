@@ -59,7 +59,7 @@ function Register({ formValue, setFormValue, onSubmit }) {
       </form>
       <p className="entry-form__caption">
         Уже зарегистрированы?{" "}
-        <Link className="entry-form__caption" to={"/sign-in"}>
+        <Link className="entry-form__caption" to={"/signin"}>
           Войти
         </Link>
       </p>

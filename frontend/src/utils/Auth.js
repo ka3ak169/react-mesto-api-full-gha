@@ -1,4 +1,5 @@
-const BASE_URL = "https://auth.nomoreparties.co";
+// const BASE_URL = "https://auth.nomoreparties.co";
+const BASE_URL = "http://localhost:3000";
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -10,13 +11,19 @@ export const register = (email, password) => {
       email,
       password,
     }),
-  }).then((response) => {
+  })
+  .then((response) => {
     if (response.ok) {
       return response.json();
+    } else {
+      // Получаем текст ошибки из ответа сервера
+      return response.json().then((data) => {
+        throw new Error(data.message);
+      });
     }
-    throw new Error("Какая-то ошибка!");
-  });
+  })
 };
+
 
 export const authorization = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
@@ -28,25 +35,39 @@ export const authorization = (email, password) => {
       email,
       password,
     }),
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error("Какая-то ошибка!");
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        // Получаем текст ошибки из ответа сервера
+        return response.json().then((data) => {
+          throw new Error(data.message);
+        });
+      }
+    })
 };
 
-export const authorize = ({ token }) => {
+export const authorize = ( token ) => {
+
+  // console.log('Token:', token);
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      // Authorization: token,
+
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     if (response.ok) {
       return response.json();
+    } else {
+      // Получаем текст ошибки из ответа сервера
+      return response.json().then((data) => {
+        throw new Error(data.message);
+      });
     }
-    throw new Error("Какая-то ошибка!");
-  });
+  })
 };
