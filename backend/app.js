@@ -12,6 +12,7 @@ const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
 const { regAvatar } = require('./utils/constants');
 const corsMiddleware = require('./middlewares/corsMiddleware');
+const cors = require('cors');
 
 const {
   login,
@@ -21,6 +22,8 @@ const {
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(cors());
 
 app.use(corsMiddleware);
 
