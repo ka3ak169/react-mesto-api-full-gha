@@ -107,7 +107,7 @@ const headers = {
 
 // Если в localStorage есть токен, добавляем его в заголовки
 if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
-  console.log(storedToken && storedToken !== "null" && storedToken !== "undefined");
+  // console.log(storedToken && storedToken !== "null" && storedToken !== "undefined");
   const token = JSON.parse(storedToken);
   // console.log(token);
   headers.authorization = `Bearer ${token}`;

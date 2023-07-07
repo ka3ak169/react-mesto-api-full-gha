@@ -34,7 +34,7 @@ function App() {
   const [registration, setRegistration] = useState(false);
   const navigate = useNavigate();
 
-
+  // console.log(loggedIn);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,32 +85,50 @@ function App() {
   const handleCardClick = (data) => {
     setSelectedCard(data);
   };
-
+  // console.log(`Я: ${currentUser._id}`);
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    // console.log(card.likes);
+    // console.log(`Я: ${currentUser._id}`);
 
-    if (isLiked) {
-      api
-        .deleteLike(card._id)
-        .then((data) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? data : c))
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (card.likes && Array.isArray(card.likes)) {
+
+    const isLiked = card.likes.some((i) => i === currentUser._id);
+
+      if (isLiked) {
+        console.log(isLiked);
+        api
+          .deleteLike(card._id)
+          .then((data) => {
+            // console.log(data);
+            setCards((state) =>
+            state.map((c) => {
+              // console.log(c); // Вывод значения переменной c в консоль
+              return c._id === card._id ? data.data : c;
+            })
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        // console.log(isLiked);
+        api
+          .addLike(card._id)
+          .then((data) => {
+            // console.log(data);
+            setCards((state) =>
+            state.map((c) => {
+              // console.log(c); // Вывод значения переменной c в консоль
+              return c._id === card._id ? data.data : c;
+            })
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     } else {
-      api
-        .addLike(card._id)
-        .then((data) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? data : c))
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      console.log("card.likes is undefined or not an array");
     }
   };
 
@@ -126,10 +144,12 @@ function App() {
   };
 
   const handleUpdateUser = (data) => {
+    // console.log(data);
     api
       .changeUserInformation(data)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((newData) => {
+        // console.log(newData.data);
+        setCurrentUser(newData.data);
         closeAllPopups();
       })
       .catch((error) => {
@@ -141,7 +161,7 @@ function App() {
     api
       .changeProfileAvatar(link)
       .then((data) => {
-        setCurrentUser(data);
+        setCurrentUser(prevState => ({ ...prevState, avatar: data.avatar }));
         closeAllPopups();
       })
       .catch((error) => {
@@ -150,10 +170,13 @@ function App() {
   };
 
   const handleAddPlaceSubmit = (data) => {
+    // console.log(data);
     api
       .addCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        // console.log(newCard);
+        api.getInitialCards()
+        .then((cards) => setCards(cards.map((item) => item)))
         closeAllPopups();
       })
       .catch((error) => {
@@ -190,8 +213,7 @@ function App() {
     authorization(email, password)
     .then((result) => {
       if (result) {
-        console.log(result.token);
-        
+        // console.log(result.token);        
         localStorage.setItem("token", JSON.stringify(result.token));
         setLoggedIn(true);
         setUserEmail(email);
@@ -225,6 +247,8 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setFormValue({ email: "", password: "" });
+    setCurrentUser({});
+    setLoggedIn(false);
     navigate("/signin");
   };
 

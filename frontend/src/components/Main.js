@@ -12,6 +12,7 @@ function Main({
   cards,
 }) {
   const userContext = useContext(CurrentUserContext);
+  // console.log(cards);
 
   return (
     <main className="content">
@@ -43,7 +44,7 @@ function Main({
         ></button>
       </section>
       <section className="cards">
-        {cards.map((card) => (
+        {cards.map((card) => (          
           <Card
             key={card._id}
             card={card}
