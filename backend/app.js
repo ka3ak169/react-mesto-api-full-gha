@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const errorMiddleware = require('./middlewares/errorMiddleware');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NotFoundError } = require('./utils/NotFoundError');
 require('dotenv').config();
 const userRouter = require('./routers/users');
@@ -41,6 +42,8 @@ const validationSchema = {
   }),
 };
 
+app.use(requestLogger); // подключаем логгер запросов
+
 app.post('/signin', celebrate(validationSchema), login);
 app.post('/signup', celebrate(validationSchema), createUser);
 
@@ -56,6 +59,8 @@ app.use(cardRouter);
 app.use((req, res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 // обработчики ошибок
 app.use(errors()); // обработчик ошибок celebrate
