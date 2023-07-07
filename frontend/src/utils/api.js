@@ -117,7 +117,8 @@ if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
 
 // Создание экземпляра API с учетом заголовков
 const api = new Api({  
-  url: 'http://localhost:3000/',
+  url: 'https://petfolio.api.nomoreparties.sbs/',
+  // url: 'http://localhost:3000/',
   headers: headers
 });
 

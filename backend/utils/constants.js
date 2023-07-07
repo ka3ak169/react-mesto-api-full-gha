@@ -8,6 +8,10 @@ const allowedCors = [
   'http://praktikum.tk',
   'localhost:3000',
   'http://localhost:3001',
+  'https://petfolio.nomoreparties.sbs',
+  'http://petfolio.nomoreparties.sbs',
+  'https://petfolio.api.nomoreparties.sbs/',
+  'http://petfolio.api.nomoreparties.sbs/',
   '*',
 ];
 
