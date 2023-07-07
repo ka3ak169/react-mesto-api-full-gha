@@ -11,8 +11,8 @@ require('dotenv').config();
 const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
 const { regAvatar } = require('./utils/constants');
-// const corsMiddleware = require('./middlewares/corsMiddleware');
-const cors = require('cors');
+const corsMiddleware = require('./middlewares/corsMiddleware');
+// const cors = require('cors');
 
 const {
   login,
@@ -23,9 +23,9 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 
-// app.use(corsMiddleware);
+app.use(corsMiddleware);
 
 // Обработка JSON-данных
 app.use(express.json());
