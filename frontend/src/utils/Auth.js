@@ -1,6 +1,5 @@
-// const BASE_URL = "https://auth.nomoreparties.co";
-// const BASE_URL = "https://localhost:3000";
-const BASE_URL = "https://petfolio.api.nomoreparties.sbs";
+const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://petfolio.api.nomoreparties.sbs";
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -50,15 +49,11 @@ export const authorization = (email, password) => {
 };
 
 export const authorize = ( token ) => {
-
-  // console.log('Token:', token);
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      // Authorization: token,
-
     },
   })
   .then((response) => {

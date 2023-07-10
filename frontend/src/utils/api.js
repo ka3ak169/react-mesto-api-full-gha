@@ -25,7 +25,6 @@ class Api {
     })
     .then(this._checkResponse)
     .then((response) => {
-      // console.log(response.data); // Выводим результат запроса в консоль
       return response.data; // Возвращаем результат для дальнейшей обработки
     });
   }
@@ -98,7 +97,6 @@ class Api {
 
 // Получение токена из localStorage
 const storedToken = localStorage.getItem("token");
-// console.log(storedToken);
 
 // Создание объекта headers с заголовками запроса
 const headers = {
@@ -107,9 +105,7 @@ const headers = {
 
 // Если в localStorage есть токен, добавляем его в заголовки
 if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
-  // console.log(storedToken && storedToken !== "null" && storedToken !== "undefined");
   const token = JSON.parse(storedToken);
-  // console.log(token);
   headers.authorization = `Bearer ${token}`;
 } else {
   console.log('Token не существует');
@@ -117,8 +113,8 @@ if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
 
 // Создание экземпляра API с учетом заголовков
 const api = new Api({  
-  url: 'https://petfolio.api.nomoreparties.sbs/',
-  // url: 'http://localhost:3000/',
+  // url: 'https://petfolio.api.nomoreparties.sbs/',
+  url: 'http://localhost:3000/',
   headers: headers
 });
 

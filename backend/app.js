@@ -14,6 +14,9 @@ const { regAvatar } = require('./utils/constants');
 const corsMiddleware = require('./middlewares/corsMiddleware');
 // const cors = require('cors');
 
+// console.log(process.env.JWT_SECRET);
+// console.log('123');
+
 const {
   login,
   createUser,

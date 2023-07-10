@@ -34,7 +34,6 @@ function App() {
   const [registration, setRegistration] = useState(false);
   const navigate = useNavigate();
 
-  // console.log(loggedIn);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,11 +84,7 @@ function App() {
   const handleCardClick = (data) => {
     setSelectedCard(data);
   };
-  // console.log(`Я: ${currentUser._id}`);
   const handleCardLike = (card) => {
-    // console.log(card.likes);
-    // console.log(`Я: ${currentUser._id}`);
-
     if (card.likes && Array.isArray(card.likes)) {
 
     const isLiked = card.likes.some((i) => i === currentUser._id);
@@ -99,10 +94,8 @@ function App() {
         api
           .deleteLike(card._id)
           .then((data) => {
-            // console.log(data);
             setCards((state) =>
             state.map((c) => {
-              // console.log(c); // Вывод значения переменной c в консоль
               return c._id === card._id ? data.data : c;
             })
             );
@@ -111,14 +104,11 @@ function App() {
             console.log(error);
           });
       } else {
-        // console.log(isLiked);
         api
           .addLike(card._id)
           .then((data) => {
-            // console.log(data);
             setCards((state) =>
             state.map((c) => {
-              // console.log(c); // Вывод значения переменной c в консоль
               return c._id === card._id ? data.data : c;
             })
             );
@@ -144,11 +134,9 @@ function App() {
   };
 
   const handleUpdateUser = (data) => {
-    // console.log(data);
     api
       .changeUserInformation(data)
       .then((newData) => {
-        // console.log(newData.data);
         setCurrentUser(newData.data);
         closeAllPopups();
       })
@@ -170,11 +158,9 @@ function App() {
   };
 
   const handleAddPlaceSubmit = (data) => {
-    // console.log(data);
     api
       .addCard(data)
       .then((newCard) => {
-        // console.log(newCard);
         api.getInitialCards()
         .then((cards) => setCards(cards.map((item) => item)))
         closeAllPopups();
@@ -187,8 +173,6 @@ function App() {
   const handleRegisterSubmit = (email, password) => {
     register(email, password)
       .then((result) => {
-        // Обработка успешного результата
-        // console.log(result);
         setRegistration(true);
         setIsInfoTooltipPopupOpen(true);
         setFormValue({ email: "", password: "" });
@@ -212,8 +196,7 @@ function App() {
   const handleLoginSubmit = (email, password) => {
     authorization(email, password)
     .then((result) => {
-      if (result) {
-        // console.log(result.token);        
+      if (result) {       
         localStorage.setItem("token", JSON.stringify(result.token));
         setLoggedIn(true);
         setUserEmail(email);
