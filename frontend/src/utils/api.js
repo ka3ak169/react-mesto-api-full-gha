@@ -1,3 +1,5 @@
+import apiUrl from './utils';
+
 class Api {
   constructor({ url, headers }) {
     this._url = url;
@@ -94,7 +96,6 @@ class Api {
   }
 }
 
-
 // Получение токена из localStorage
 const storedToken = localStorage.getItem("token");
 
@@ -113,8 +114,7 @@ if (storedToken && storedToken !== "null" && storedToken !== "undefined") {
 
 // Создание экземпляра API с учетом заголовков
 const api = new Api({  
-  url: 'https://petfolio.api.nomoreparties.sbs/',
-  // url: 'http://localhost:3000/',
+  url: `${apiUrl}/`,
   headers: headers
 });
 

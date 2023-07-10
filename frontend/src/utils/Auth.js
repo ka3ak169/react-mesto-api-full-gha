@@ -1,5 +1,6 @@
-// const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://petfolio.api.nomoreparties.sbs";
+import apiUrl from './utils';
+
+const BASE_URL = apiUrl;
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
