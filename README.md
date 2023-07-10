@@ -10,7 +10,7 @@
 
 ## Ссылки на проект
 
-IP-адрес <130.193.41.217>
+IP-адрес <ipv4> 130.193.41.217
 
 Frontend https://petfolio.nomoreparties.sbs
 
