@@ -12,10 +12,6 @@ const userRouter = require('./routers/users');
 const cardRouter = require('./routers/cards');
 const { regAvatar } = require('./utils/constants');
 const corsMiddleware = require('./middlewares/corsMiddleware');
-// const cors = require('cors');
-
-// console.log(process.env.JWT_SECRET);
-// console.log('123');
 
 const {
   login,
@@ -25,8 +21,6 @@ const {
 const { PORT = 3000 } = process.env;
 
 const app = express();
-
-// app.use(cors());
 
 app.use(corsMiddleware);
 
@@ -49,6 +43,12 @@ const validationSchema = {
 };
 
 app.use(requestLogger); // подключаем логгер запросов
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate(validationSchema), login);
 app.post('/signup', celebrate(validationSchema), createUser);
